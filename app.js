@@ -1,20 +1,31 @@
 const chalk = require('chalk');
+const yargs = require('yargs');
 
 const notes = require('./notes');
 
 const { log } = console;
 
-const command = process.argv[2];
+const addCommand = (command, describe, handler) =>
+  yargs.command({
+    command,
+    describe,
+    handler
+  });
 
-switch (command) {
-  case 'add':
-    log('Adding note...');
+addCommand('add', 'Add a new note', () => {
+  log('Adding a new note!');
+});
 
-    break;
-  case 'remove':
-    log('Removing note...');
-    break;
+addCommand('remove', 'Remove a note', () => {
+  log('Removing a note!');
+});
 
-  default:
-    break;
-}
+addCommand('list', 'List all notes', () => {
+  log('Listing up all notes!');
+});
+
+addCommand('read', 'Read a specific note', ({ id }) => {
+  log(`Reading a note with id: ${id}!`);
+});
+
+log(yargs.argv);
