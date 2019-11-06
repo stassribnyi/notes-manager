@@ -1,12 +1,20 @@
-const validator = require('validator');
 const chalk = require('chalk');
 
 const notes = require('./notes');
 
 const { log } = console;
 
-log(chalk.bgWhiteBright(notes.getNotes()));
-log(chalk.green(validator.isEmail('stas@sribnyi.com')));
-log(chalk.red(validator.isEmail('stas.sribnyi.com')));
-log(chalk.blue(validator.isURL('https://test.io')));
-log(chalk.magenta(validator.isURL('https://testio')));
+const command = process.argv[2];
+
+switch (command) {
+  case 'add':
+    log('Adding note...');
+
+    break;
+  case 'remove':
+    log('Removing note...');
+    break;
+
+  default:
+    break;
+}
