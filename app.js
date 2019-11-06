@@ -5,6 +5,9 @@ const notes = require('./notes');
 
 const { log } = console;
 
+const successMsg = message => log(chalk.bgGreenBright(message));
+const greenMsg = message => log(chalk.green(message));
+
 const addCommand = (command, describe, handler, builder = {}) =>
   yargs.command({
     command,
@@ -21,11 +24,8 @@ const logNote = note => {
 addCommand(
   'add',
   'Add a new note',
-  ({ title, body }) => {
-    notes.addNote(title, body, note => {
-      log(chalk.bgGreenBright('Note has been added!'));
-    });
-  },
+  ({ title, body }) =>
+    notes.addNote(title, body, () => successMsg('Note has been added!')),
   {
     title: {
       describe: 'A note title',
@@ -43,21 +43,21 @@ addCommand(
 addCommand(
   'remove',
   'Remove a note',
-  () => {
-    log('Removing a note!');
-  },
+  ({ title }) =>
+    notes.removeNote(title, () => successMsg('Note has been removed!')),
   {
-    id: {
-      describe: 'An id of a note',
+    title: {
+      describe: 'A title of a note',
       demandOption: true,
-      type: 'number'
+      type: 'string'
     }
   }
 );
 
 addCommand('list', 'List all notes', () =>
   notes.getNotes(notes => {
-    log(chalk.green(notes.length ? 'Notes:' : 'No notes'));
+    greenMsg(notes.length ? 'Notes:' : 'No notes found');
+
     notes.forEach(logNote);
   })
 );
@@ -65,14 +65,17 @@ addCommand('list', 'List all notes', () =>
 addCommand(
   'read',
   'Read a specific note',
-  ({ id }) => {
-    log(`Reading a note with id: ${id}!`);
-  },
+  ({ title }) =>
+    notes.readNote(title, note => {
+      greenMsg(note ? 'Note:' : 'No note found');
+
+      note && logNote(note);
+    }),
   {
-    id: {
-      describe: 'An id of a note',
+    title: {
+      describe: 'A title of a note',
       demandOption: true,
-      type: 'number'
+      type: 'string'
     }
   }
 );
