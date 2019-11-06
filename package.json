@@ -1,0 +1,15 @@
+{
+  "name": "notes-app",
+  "version": "0.0.1",
+  "description": "An app to manage notes",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stas Sribnyi",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "validator": "12.0.0"
+  }
+}
