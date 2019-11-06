@@ -13,11 +13,18 @@ const addCommand = (command, describe, handler, builder = {}) =>
     builder
   });
 
+const logNote = note => {
+  log(chalk.bgWhiteBright(`${note.title}\n${note.body}`));
+  log('_______________________________________________');
+};
+
 addCommand(
   'add',
   'Add a new note',
   ({ title, body }) => {
-    log(`Adding a new note...\nTitle: ${title}\nBody: ${body}`);
+    notes.addNote(title, body, note => {
+      log(chalk.bgGreenBright('Note has been added!'));
+    });
   },
   {
     title: {
@@ -48,9 +55,12 @@ addCommand(
   }
 );
 
-addCommand('list', 'List all notes', () => {
-  log('Listing up all notes!');
-});
+addCommand('list', 'List all notes', () =>
+  notes.getNotes(notes => {
+    log(chalk.green(notes.length ? 'Notes:' : 'No notes'));
+    notes.forEach(logNote);
+  })
+);
 
 addCommand(
   'read',
